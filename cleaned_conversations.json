@@ -1,0 +1,72 @@
+[
+  {
+    "conversation_id": "CONV001",
+    "messages": [
+      {
+        "speaker": "customer",
+        "text": "Hi, I want to know about Kia cars."
+      },
+      {
+        "speaker": "ai",
+        "text": "Hi! Sure, I'd be happy to help. Are you looking for a hatchback, sedan, or SUV?"
+      }
+    ],
+    "transcript": "Customer: Hi, I want to know about Kia cars.\nAi: Hi! Sure, I'd be happy to help. Are you looking for a hatchback, sedan, or SUV?"
+  },
+  {
+    "conversation_id": "CONV002",
+    "messages": [
+      {
+        "speaker": "customer",
+        "text": "I want to buy a Kia Sonet. What is the price?"
+      },
+      {
+        "speaker": "ai",
+        "text": "The price depends on the variant and location. I can help you request a quotation."
+      }
+    ],
+    "transcript": "Customer: I want to buy a Kia Sonet. What is the price?\nAi: The price depends on the variant and location. I can help you request a quotation."
+  },
+  {
+    "conversation_id": "CONV003",
+    "messages": [
+      {
+        "speaker": "customer",
+        "text": "I need to book my car's first service."
+      },
+      {
+        "speaker": "ai",
+        "text": "Of course! What is your car model, and which date would you prefer?"
+      }
+    ],
+    "transcript": "Customer: I need to book my car's first service.\nAi: Of course! What is your car model, and which date would you prefer?"
+  },
+  {
+    "conversation_id": "CONV004",
+    "messages": [
+      {
+        "speaker": "customer",
+        "text": "The service centre returned my car with a scratch."
+      },
+      {
+        "speaker": "ai",
+        "text": "I'm sorry this happened. I can help you register a complaint."
+      }
+    ],
+    "transcript": "Customer: The service centre returned my car with a scratch.\nAi: I'm sorry this happened. I can help you register a complaint."
+  },
+  {
+    "conversation_id": "CONV005",
+    "messages": [
+      {
+        "speaker": "customer",
+        "text": "Hi, how are you?"
+      },
+      {
+        "speaker": "ai",
+        "text": "Hi! I'm doing well, thank you. How can I help you today?"
+      }
+    ],
+    "transcript": "Customer: Hi, how are you?\nAi: Hi! I'm doing well, thank you. How can I help you today?"
+  }
+]
