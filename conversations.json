@@ -1,0 +1,22 @@
+[
+    {
+        "customer": "Hi, I want to know about Kia cars.",
+        "ai": "Hi! Sure, I'd be happy to help. Are you looking for a hatchback, sedan, or SUV?"
+    },
+    {
+        "customer": "I want to buy a Kia Sonet. What is the price?",
+        "ai": "The price depends on the variant and location. I can help you request a quotation."
+    },
+    {
+        "customer": "I need to book my car's first service.",
+        "ai": "Of course! What is your car model, and which date would you prefer?"
+    },
+    {
+        "customer": "The service centre returned my car with a scratch.",
+        "ai": "I'm sorry this happened. I can help you register a complaint."
+    },
+    {
+        "customer": "Hi, how are you?",
+        "ai": "Hi! I'm doing well, thank you. How can I help you today?"
+    }
+]
