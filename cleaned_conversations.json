@@ -1,72 +1,28 @@
 [
   {
-    "conversation_id": "CONV001",
+    "conversation_id": "CONV_SALES_001",
     "messages": [
       {
         "speaker": "customer",
-        "text": "Hi, I want to know about Kia cars."
+        "text": "Hi, I am interested in purchasing a new SUV. What models do you offer?"
       },
       {
         "speaker": "ai",
-        "text": "Hi! Sure, I'd be happy to help. Are you looking for a hatchback, sedan, or SUV?"
-      }
-    ],
-    "transcript": "Customer: Hi, I want to know about Kia cars.\nAi: Hi! Sure, I'd be happy to help. Are you looking for a hatchback, sedan, or SUV?"
-  },
-  {
-    "conversation_id": "CONV002",
-    "messages": [
+        "text": "Hello! We currently offer the Kia Seltos and Kia Sonet. Are you looking for a compact or mid-size SUV?"
+      },
       {
         "speaker": "customer",
-        "text": "I want to buy a Kia Sonet. What is the price?"
+        "text": "I want to check out the Kia Seltos. Can you tell me the starting price and available variants?"
       },
       {
         "speaker": "ai",
-        "text": "The price depends on the variant and location. I can help you request a quotation."
-      }
-    ],
-    "transcript": "Customer: I want to buy a Kia Sonet. What is the price?\nAi: The price depends on the variant and location. I can help you request a quotation."
-  },
-  {
-    "conversation_id": "CONV003",
-    "messages": [
+        "text": "The Kia Seltos starts at around $24,490 and comes in multiple variants. Would you like to schedule a test drive?"
+      },
       {
         "speaker": "customer",
-        "text": "I need to book my car's first service."
-      },
-      {
-        "speaker": "ai",
-        "text": "Of course! What is your car model, and which date would you prefer?"
+        "text": "Yes, I would love to book a test drive for this weekend. How do I proceed?"
       }
     ],
-    "transcript": "Customer: I need to book my car's first service.\nAi: Of course! What is your car model, and which date would you prefer?"
-  },
-  {
-    "conversation_id": "CONV004",
-    "messages": [
-      {
-        "speaker": "customer",
-        "text": "The service centre returned my car with a scratch."
-      },
-      {
-        "speaker": "ai",
-        "text": "I'm sorry this happened. I can help you register a complaint."
-      }
-    ],
-    "transcript": "Customer: The service centre returned my car with a scratch.\nAi: I'm sorry this happened. I can help you register a complaint."
-  },
-  {
-    "conversation_id": "CONV005",
-    "messages": [
-      {
-        "speaker": "customer",
-        "text": "Hi, how are you?"
-      },
-      {
-        "speaker": "ai",
-        "text": "Hi! I'm doing well, thank you. How can I help you today?"
-      }
-    ],
-    "transcript": "Customer: Hi, how are you?\nAi: Hi! I'm doing well, thank you. How can I help you today?"
+    "transcript": "Customer: Hi, I am interested in purchasing a new SUV. What models do you offer?\nAi: Hello! We currently offer the Kia Seltos and Kia Sonet. Are you looking for a compact or mid-size SUV?\nCustomer: I want to check out the Kia Seltos. Can you tell me the starting price and available variants?\nAi: The Kia Seltos starts at around $24,490 and comes in multiple variants. Would you like to schedule a test drive?\nCustomer: Yes, I would love to book a test drive for this weekend. How do I proceed?"
   }
 ]

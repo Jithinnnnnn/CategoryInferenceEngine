@@ -1,32 +1,8 @@
 [
   {
-    "conversation_id": "CONV001",
-    "transcript": "Customer: Hi, I want to know about Kia cars.\nAi: Hi! Sure, I'd be happy to help. Are you looking for a hatchback, sedan, or SUV?",
+    "conversation_id": "CONV_SALES_001",
+    "transcript": "Customer: Hi, I am interested in purchasing a new SUV. What models do you offer?\nAi: Hello! We currently offer the Kia Seltos and Kia Sonet. Are you looking for a compact or mid-size SUV?\nCustomer: I want to check out the Kia Seltos. Can you tell me the starting price and available variants?\nAi: The Kia Seltos starts at around $24,490 and comes in multiple variants. Would you like to schedule a test drive?\nCustomer: Yes, I would love to book a test drive for this weekend. How do I proceed?",
     "predicted_intent": "sales",
-    "confidence": 0.7486
-  },
-  {
-    "conversation_id": "CONV002",
-    "transcript": "Customer: I want to buy a Kia Sonet. What is the price?\nAi: The price depends on the variant and location. I can help you request a quotation.",
-    "predicted_intent": "sales",
-    "confidence": 0.6883
-  },
-  {
-    "conversation_id": "CONV003",
-    "transcript": "Customer: I need to book my car's first service.\nAi: Of course! What is your car model, and which date would you prefer?",
-    "predicted_intent": "service",
-    "confidence": 0.8753
-  },
-  {
-    "conversation_id": "CONV004",
-    "transcript": "Customer: The service centre returned my car with a scratch.\nAi: I'm sorry this happened. I can help you register a complaint.",
-    "predicted_intent": "complaint",
-    "confidence": 0.8544
-  },
-  {
-    "conversation_id": "CONV005",
-    "transcript": "Customer: Hi, how are you?\nAi: Hi! I'm doing well, thank you. How can I help you today?",
-    "predicted_intent": "Other",
-    "confidence": 0.611
+    "confidence": 0.795
   }
 ]

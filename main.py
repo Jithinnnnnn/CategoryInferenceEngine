@@ -16,7 +16,7 @@ OUTPUT_FILE = BASE_DIR / "predictions.json"
 # -------------------------
 def extract_data():
     """
-    Reads the raw conversations JSON file with error handling 
+    Reads the raw multi-turn conversations JSON file with error handling 
     for missing files or malformed JSON structures.
     """
     if not RAW_FILE.exists():
@@ -34,9 +34,9 @@ def extract_data():
         )
 
     if not isinstance(data, list):
-        raise ValueError("Data Quality Issue: Input JSON must contain a root-level list of conversations.")
+        raise ValueError("Data Quality Issue: Input JSON must contain a root-level list of conversation records.")
 
-    print(f"Extraction Successful: Loaded {len(data)} raw conversations from {RAW_FILE.name}.")
+    print(f"Extraction Successful: Loaded {len(data)} conversation record(s) from {RAW_FILE.name}.")
     return data
 
 
@@ -54,9 +54,8 @@ def clean_text(value):
 
 def transform_data(raw_data):
     """
-    Cleans raw conversation data. Handles both flat key-value speaker format
-    (e.g., {"customer": "...", "ai": "..."}) and nested format with 'messages'.
-    Auto-generates missing conversation IDs.
+    Cleans multi-turn conversation data. Validates the nested 'messages' structure,
+    removes empty or invalid speaker messages, and compiles a full chronological transcript.
     """
     cleaned = []
     seen_ids = set()
@@ -77,31 +76,35 @@ def transform_data(raw_data):
             print(f"Data Quality Issue: Duplicate conversation ID '{conversation_id}' detected. Skipping.")
             continue
 
+        messages = record.get("messages", [])
+        if not isinstance(messages, list):
+            print(f"Schema Mismatch: 'messages' field in '{conversation_id}' must be a list. Skipping.")
+            continue
+
         clean_messages = []
         transcript_parts = []
 
-        # Case A: Nested 'messages' format
-        if "messages" in record and isinstance(record["messages"], list):
-            for message in record["messages"]:
-                if not isinstance(message, dict):
-                    continue
-                speaker = clean_text(message.get("speaker", "")).lower()
-                text = clean_text(message.get("text", ""))
+        for msg_idx, message in enumerate(messages):
+            if not isinstance(message, dict):
+                print(f"Data Warning: Message at index {msg_idx} in '{conversation_id}' is not a dictionary. Skipping.")
+                continue
 
-                if speaker in {"customer", "ai", "agent"} and text:
-                    clean_messages.append({"speaker": speaker, "text": text})
-                    transcript_parts.append(f"{speaker.capitalize()}: {text}")
+            speaker = clean_text(message.get("speaker", "")).lower()
+            text = clean_text(message.get("text", ""))
 
-        # Case B: Flat format (e.g., {"customer": "...", "ai": "..."})
-        else:
-            for key, val in record.items():
-                speaker = clean_text(key).lower()
-                text = clean_text(val)
-                if speaker in {"customer", "ai", "agent"} and text:
-                    clean_messages.append({"speaker": speaker, "text": text})
-                    transcript_parts.append(f"{speaker.capitalize()}: {text}")
+            # Validate speaker and text fields
+            if speaker not in {"customer", "ai", "agent"}:
+                continue
+            if not text:
+                continue
 
-        # Ensure there is at least one customer message to classify
+            clean_messages.append({
+                "speaker": speaker,
+                "text": text
+            })
+            transcript_parts.append(f"{speaker.capitalize()}: {text}")
+
+        # Ensure there is at least one customer message
         if not any(m["speaker"] == "customer" for m in clean_messages):
             print(f"Skipping '{conversation_id}': No valid customer messages found.")
             continue
@@ -116,7 +119,7 @@ def transform_data(raw_data):
 
         seen_ids.add(conversation_id)
 
-    print(f"Transformation Complete: Successfully cleaned {len(cleaned)} conversations.")
+    print(f"Transformation Complete: Successfully cleaned {len(cleaned)} conversation(s).")
     return cleaned
 
 
@@ -135,8 +138,8 @@ def save_json(path, data):
 # -------------------------
 def classify_conversations(cleaned_data):
     """
-    Passes cleaned conversation transcripts through the open-source Laya model 
-    to perform intent detection (sales, service, complaint, or Other).
+    Passes cleaned multi-turn conversation transcripts through the open-source Laya model 
+    to perform primary intent detection.
     """
     if not cleaned_data:
         print("No cleaned conversations available for inference.")
@@ -235,7 +238,7 @@ def classify_conversations(cleaned_data):
 # RUN THE ETL PIPELINE
 # -------------------------
 def main():
-    print("--- Starting ETL & Inference Pipeline ---")
+    print("--- Starting Multi-Turn ETL & Inference Pipeline ---")
     
     # 1. Extract
     raw_data = extract_data()

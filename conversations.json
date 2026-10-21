@@ -1,22 +1,27 @@
 [
     {
-        "customer": "Hi, I want to know about Kia cars.",
-        "ai": "Hi! Sure, I'd be happy to help. Are you looking for a hatchback, sedan, or SUV?"
-    },
-    {
-        "customer": "I want to buy a Kia Sonet. What is the price?",
-        "ai": "The price depends on the variant and location. I can help you request a quotation."
-    },
-    {
-        "customer": "I need to book my car's first service.",
-        "ai": "Of course! What is your car model, and which date would you prefer?"
-    },
-    {
-        "customer": "The service centre returned my car with a scratch.",
-        "ai": "I'm sorry this happened. I can help you register a complaint."
-    },
-    {
-        "customer": "Hi, how are you?",
-        "ai": "Hi! I'm doing well, thank you. How can I help you today?"
+        "conversation_id": "CONV_SALES_001",
+        "messages": [
+            {
+                "speaker": "customer",
+                "text": "Hi, I am interested in purchasing a new SUV. What models do you offer?"
+            },
+            {
+                "speaker": "ai",
+                "text": "Hello! We currently offer the Kia Seltos and Kia Sonet. Are you looking for a compact or mid-size SUV?"
+            },
+            {
+                "speaker": "customer",
+                "text": "I want to check out the Kia Seltos. Can you tell me the starting price and available variants?"
+            },
+            {
+                "speaker": "ai",
+                "text": "The Kia Seltos starts at around $24,490 and comes in multiple variants. Would you like to schedule a test drive?"
+            },
+            {
+                "speaker": "customer",
+                "text": "Yes, I would love to book a test drive for this weekend. How do I proceed?"
+            }
+        ]
     }
 ]
