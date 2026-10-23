@@ -1,10 +1,22 @@
 """
-main.py — CLI Entry Point
-Run this directly to execute the full ETL + Inference batch pipeline:
+main.py — AutoSphere CRM Entry Point
+Run the CRM web app directly:
     python main.py
+Or open:
+    http://localhost:8000
 """
 
-from backend.engine import run_pipeline
+import uvicorn
 
 if __name__ == "__main__":
-    run_pipeline()
+    print("=" * 60)
+    print("🚀 AutoSphere Dealership CRM & Voice AI Concierge")
+    print("🌐 Web App: http://localhost:8000")
+    print("📖 API Docs: http://localhost:8000/docs")
+    print("=" * 60)
+    uvicorn.run(
+        "backend.app:app",
+        host="0.0.0.0",
+        port=8000,
+        reload=True,
+    )
