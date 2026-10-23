@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Bot — Category Inference Engine</title>
+  <meta name="description" content="Interactive AI conversation simulator. Build multi-turn conversations and test real-time intent classification using the Laya model." />
+  <link rel="stylesheet" href="/static/css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>" />
+</head>
+<body>
+
+<!-- ── Navigation ───────────────────────────────────── -->
+<nav class="navbar">
+  <a href="/" class="nav-brand">
+    <div class="nav-logo-icon">🧠</div>
+    <span>CIE</span>
+    <span class="nav-badge">v1.0</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="/">🏠 Home</a></li>
+    <li><a href="/report">📊 Report</a></li>
+    <li><a href="/bot" class="active">🤖 AI Bot</a></li>
+  </ul>
+</nav>
+
+<!-- ── Page Content ─────────────────────────────────── -->
+<main class="page-wrapper">
+
+  <!-- Page Header -->
+  <section class="fade-up" style="margin-bottom:2rem;">
+    <div class="section-label">🤖 Live Inference</div>
+    <h1>AI <span style="background:var(--grad-brand);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Bot Tester</span></h1>
+    <p style="margin-top:0.5rem;">
+      Build a multi-turn conversation manually or load a sample, then classify
+      its intent using the Laya model in real time.
+    </p>
+  </section>
+
+  <div style="display:grid;grid-template-columns:1fr 380px;gap:1.5rem;align-items:start;" id="bot-grid">
+
+    <!-- Left: Conversation Builder -->
+    <div style="display:flex;flex-direction:column;gap:1.25rem;">
+
+      <!-- Sample Presets -->
+      <div class="card fade-up">
+        <div style="font-size:0.78rem;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:0.75rem;">
+          Quick Load Sample
+        </div>
+        <div id="sample-buttons" style="display:flex;gap:8px;flex-wrap:wrap;"></div>
+      </div>
+
+      <!-- Chat Window -->
+      <div class="card fade-up" style="animation-delay:0.05s;padding:0;overflow:hidden;">
+        <div style="padding:1rem 1.25rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
+          <div style="font-size:0.85rem;font-weight:600;color:var(--text-primary);">
+            💬 Conversation
+          </div>
+          <button class="btn btn-danger btn-sm" id="btn-clear">🗑 Clear</button>
+        </div>
+        <div class="chat-window" id="chat-window" style="border:none;border-radius:0;"></div>
+      </div>
+
+      <!-- Add Message Input -->
+      <div class="card fade-up" style="animation-delay:0.1s;">
+        <div style="font-size:0.78rem;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:0.75rem;">
+          Add a Message
+        </div>
+
+        <div style="display:flex;gap:10px;margin-bottom:10px;flex-wrap:wrap;">
+          <select class="select" id="msg-speaker" style="width:auto;flex:0 0 auto;">
+            <option value="customer">🧑 Customer</option>
+            <option value="ai">🤖 AI / Agent</option>
+          </select>
+          <div style="flex:1;min-width:200px;">
+            <textarea
+              class="textarea"
+              id="msg-text"
+              placeholder="Type the customer or AI message here… (Ctrl+Enter to add)"
+              rows="3"
+            ></textarea>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:8px;justify-content:flex-end;">
+          <button class="btn btn-primary" id="btn-add-msg">＋ Add Message</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Right: Classify Panel -->
+    <div style="display:flex;flex-direction:column;gap:1.25rem;position:sticky;top:84px;">
+
+      <!-- Classify Button -->
+      <div class="card card-glow fade-up" style="animation-delay:0.05s;text-align:center;">
+        <div style="font-size:2.5rem;margin-bottom:0.5rem;">⚡</div>
+        <h3 style="margin-bottom:0.5rem;">Classify Intent</h3>
+        <p style="font-size:0.82rem;margin-bottom:1.25rem;">
+          Run the Laya model against the current conversation to predict
+          the customer's primary intent.
+        </p>
+        <button class="btn btn-primary btn-lg" id="btn-classify" style="width:100%;">
+          ⚡ Classify Intent
+        </button>
+      </div>
+
+      <!-- Result Panel -->
+      <div class="result-panel" id="result-panel">
+        <div style="font-size:0.75rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.75rem;">
+          Prediction Result
+        </div>
+
+        <div class="result-intent-row">
+          <span class="result-label">Intent:</span>
+          <span id="result-badge"></span>
+        </div>
+
+        <div class="result-label" style="margin-top:0.5rem;">Confidence</div>
+        <div class="conf-meter">
+          <div class="conf-meter-fill" id="result-meter-fill" style="width:0%;"></div>
+        </div>
+        <div id="result-conf-text" style="font-size:0.82rem;color:var(--text-secondary);"></div>
+
+        <div style="margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border);">
+          <div class="result-label" style="margin-bottom:4px;">What this means:</div>
+          <p id="result-desc" style="font-size:0.82rem;line-height:1.5;"></p>
+        </div>
+      </div>
+
+      <!-- Intent Legend Card -->
+      <div class="card fade-up" style="animation-delay:0.1s;">
+        <div style="font-size:0.75rem;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:0.75rem;">
+          Intent Categories
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="display:flex;align-items:flex-start;gap:10px;">
+            <span class="badge badge-sales">🛒 Sales</span>
+            <span style="font-size:0.78rem;color:var(--text-muted);">Purchase, pricing, variants, booking, test drive</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px;">
+            <span class="badge badge-service">🔧 Service</span>
+            <span style="font-size:0.78rem;color:var(--text-muted);">Maintenance, servicing, repairs, technical support</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px;">
+            <span class="badge badge-complaint">⚠️ Complaint</span>
+            <span style="font-size:0.78rem;color:var(--text-muted);">Dissatisfaction, damage, delays, unresolved issues</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px;">
+            <span class="badge badge-other">💬 Other</span>
+            <span style="font-size:0.78rem;color:var(--text-muted);">Greetings, thanks, unrelated requests</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Tips -->
+  <section class="fade-up" style="animation-delay:0.2s;margin-top:2rem;">
+    <div class="card" style="display:flex;gap:2rem;flex-wrap:wrap;">
+      <div style="flex:1;min-width:200px;">
+        <div style="font-size:1.1rem;margin-bottom:0.4rem;">💡 Tips</div>
+        <ul style="font-size:0.82rem;color:var(--text-secondary);line-height:1.8;padding-left:1.2rem;">
+          <li>Always add at least one <strong>Customer</strong> message before classifying.</li>
+          <li>Multi-turn conversations give more accurate results than single messages.</li>
+          <li>Use <strong>Ctrl+Enter</strong> to quickly add a message.</li>
+          <li>Load a sample to see how different intents are classified.</li>
+        </ul>
+      </div>
+      <div style="flex:1;min-width:200px;">
+        <div style="font-size:1.1rem;margin-bottom:0.4rem;">🔗 Quick Links</div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <a href="/report" class="btn btn-ghost btn-sm" style="justify-content:flex-start;">📊 View Full Report</a>
+          <a href="/" class="btn btn-ghost btn-sm" style="justify-content:flex-start;">▶ Run Batch Pipeline</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ── Footer ────────────────────────────────────────── -->
+<footer class="footer">
+  Category Inference Engine · Powered by <span>Laya</span> · Built with <span>FastAPI</span>
+</footer>
+
+<div id="toast-container"></div>
+
+<script src="/static/js/app.js"></script>
+<script src="/static/js/bot.js"></script>
+
+<!-- Responsive 2-col grid → 1-col on mobile -->
+<style>
+  @media (max-width: 900px) {
+    #bot-grid { grid-template-columns: 1fr !important; }
+  }
+</style>
+</body>
+</html>

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AutoSphere CRM — Automotive Dealership & Voice AI</title>
+  <meta name="description" content="Next-Gen Automotive CRM powered by AI voice agents and conversation intent classification." />
+  <link rel="stylesheet" href="/static/css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚗</text></svg>" />
+</head>
+<body>
+
+<!-- ── Navigation ───────────────────────────────────── -->
+<nav class="navbar">
+  <a href="/" class="nav-brand">
+    <div class="nav-logo-icon">🚗</div>
+    <span>AutoSphere CRM</span>
+    <span class="nav-badge">AI Powered</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="/" id="nav-home" class="active">🏠 CRM Home</a></li>
+    <li><a href="/report" id="nav-report">📊 Analytics</a></li>
+    <li><a href="/bot" id="nav-bot">🤖 Text Inference Bot</a></li>
+  </ul>
+</nav>
+
+<!-- ── Page Content ─────────────────────────────────── -->
+<main class="page-wrapper">
+
+  <!-- CRM Hero -->
+  <section class="hero fade-up">
+    <div class="crm-header-badge">
+      <span>✨ Dealership Intelligence Hub</span>
+      <span>•</span>
+      <span>Laya Intent Engine</span>
+    </div>
+    <h1>Automotive CRM &amp; <span>Voice AI Concierge</span></h1>
+    <p>
+      Manage your showroom inventory, track live customer leads, and let the voice AI agent qualify sales inquiries, schedule test drives, and route service appointments.
+    </p>
+    <div class="hero-actions">
+      <a href="#voice-agent-section" class="btn btn-primary btn-lg">🎙️ Launch Voice Agent</a>
+      <a href="#inventory-section" class="btn btn-secondary btn-lg">🚗 Explore Cars On Sale</a>
+      <button class="btn btn-ghost btn-lg" id="btn-run-pipeline">⚡ Sync AI Pipeline</button>
+    </div>
+  </section>
+
+  <!-- CRM Metric Cards -->
+  <section class="fade-up" style="animation-delay:0.1s">
+    <div class="section-header">
+      <div class="section-label">📈 Dealership Overview</div>
+      <h2>CRM Live Performance</h2>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card fade-up">
+        <span class="stat-icon">🚗</span>
+        <div class="stat-value" id="stat-inventory">8</div>
+        <div class="stat-label">Vehicles in Inventory</div>
+      </div>
+      <div class="stat-card fade-up">
+        <span class="stat-icon">🏷️</span>
+        <div class="stat-value" id="stat-on-sale" style="color:var(--intent-sales)">5</div>
+        <div class="stat-label">Cars On Sale / Stock</div>
+      </div>
+      <div class="stat-card fade-up">
+        <span class="stat-icon">👥</span>
+        <div class="stat-value" id="stat-total">{{ total or 18 }}</div>
+        <div class="stat-label">Active Customer Leads</div>
+      </div>
+      <div class="stat-card fade-up">
+        <span class="stat-icon">🎯</span>
+        <div class="stat-value" id="stat-confidence">{{ avg_conf or 94.2 }}%</div>
+        <div class="stat-label">AI Intent Confidence</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Voice Agent Section ───────────────────────────── -->
+  <section id="voice-agent-section" class="fade-up" style="animation-delay:0.15s">
+    <div class="section-header">
+      <div class="section-label">🎙️ Autonomous Voice Assistant</div>
+      <h2>Dealership AI Voice Concierge</h2>
+      <p style="margin-top:0.3rem">
+        Click the microphone or choose a voice prompt to converse naturally. The AI listens, recognizes your speech, classifies customer intent in real-time, and responds aloud!
+      </p>
+    </div>
+
+    <div class="voice-agent-card">
+      <div class="voice-grid">
+        
+        <!-- Left: Interactive Voice Controller -->
+        <div class="voice-control-panel">
+          <div class="voice-hud" id="voice-hud">
+            <div class="voice-pulse-ring"></div>
+            <button class="mic-btn" id="mic-btn" title="Click to start voice conversation" aria-label="Microphone">
+              🎙️
+            </button>
+          </div>
+
+          <!-- Dynamic Audio Bars -->
+          <div class="waveform-bars" id="waveform-bars">
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+          </div>
+
+          <div class="voice-status-pill" id="voice-status-pill">
+            ⚪ Standby · Click to Talk
+          </div>
+
+          <p style="font-size:0.75rem; color:var(--text-muted); margin-top:1rem; line-height:1.4;">
+            Uses Web Speech Recognition &amp; Speech Synthesis. Real-time NLP intent mapping to Sales, Service, or Complaints.
+          </p>
+        </div>
+
+        <!-- Right: Live Conversation Transcript & Intent Feed -->
+        <div class="voice-transcript-panel">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
+            <div style="font-size:0.85rem; font-weight:700; color:var(--text-primary); display:flex; align-items:center; gap:8px;">
+              <span>💬 Live Voice Transcript</span>
+              <span id="voice-intent-badge" style="display:none;"></span>
+            </div>
+            <button class="btn btn-ghost" id="btn-clear-voice" style="padding:4px 10px; font-size:0.75rem;">Clear</button>
+          </div>
+
+          <!-- Stream window -->
+          <div class="voice-stream-window" id="voice-stream-window">
+            <div class="voice-bubble agent">
+              <div class="voice-bubble-content">
+                <strong>🤖 AutoSphere Voice Agent:</strong><br/>
+                "Hello! Welcome to AutoSphere Dealership. I can help you check which cars are on sale, book a test drive, or schedule a service visit. How can I assist you today?"
+              </div>
+            </div>
+          </div>
+
+          <!-- Suggested Quick Voice Prompts -->
+          <div class="voice-chips-title">💡 Or click a quick voice prompt to simulate:</div>
+          <div class="voice-chips-row">
+            <button class="voice-chip" data-query="Which cars are currently on sale and available right now?">
+              🏷️ Cars on sale?
+            </button>
+            <button class="voice-chip" data-query="Can I book a test drive for the Kia Seltos GT tomorrow?">
+              🏎️ Book Seltos test drive
+            </button>
+            <button class="voice-chip" data-query="What is the price and range of the Tesla Model Y?">
+              ⚡ Tesla Model Y price?
+            </button>
+            <button class="voice-chip" data-query="I need to schedule my 10,000 km routine maintenance service.">
+              🔧 Schedule car service
+            </button>
+          </div>
+
+          <!-- Text Fallback Input -->
+          <form id="voice-fallback-form" class="voice-text-fallback">
+            <input 
+              type="text" 
+              id="voice-text-input" 
+              class="input" 
+              placeholder="Or type inquiry here (e.g. 'Show me cars on sale')..." 
+              autocomplete="off"
+            />
+            <button type="submit" class="btn btn-primary" id="btn-voice-send">
+              Speak &amp; Ask
+            </button>
+          </form>
+
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Car Inventory Section ─────────────────────────── -->
+  <section id="inventory-section" class="fade-up" style="animation-delay:0.2s">
+    <div class="section-header" style="display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:1rem;">
+      <div>
+        <div class="section-label">🚘 Showroom Catalog</div>
+        <h2>Vehicles in Stock &amp; For Sale</h2>
+        <p style="margin-top:0.3rem">Current dealership fleet with live pricing, availability status, and booking options.</p>
+      </div>
+
+      <!-- Search Input -->
+      <div class="search-input-wrap" style="max-width:280px; width:100%;">
+        <span class="icon">🔍</span>
+        <input type="text" id="car-search" class="input" placeholder="Search make, model, fuel..." />
+      </div>
+    </div>
+
+    <!-- Inventory Filter Tabs -->
+    <div class="inventory-tabs">
+      <button class="tab-pill active" data-filter="all">All Vehicles (<span id="count-all">8</span>)</button>
+      <button class="tab-pill" data-filter="sale">🔥 On Sale Now (<span id="count-sale">5</span>)</button>
+      <button class="tab-pill" data-filter="electric">⚡ Electric &amp; Hybrid (<span id="count-ev">3</span>)</button>
+      <button class="tab-pill" data-filter="suv">🚙 SUVs (<span id="count-suv">4</span>)</button>
+      <button class="tab-pill" data-filter="sedan">🏎️ Sedans &amp; Luxury (<span id="count-sedan">2</span>)</button>
+    </div>
+
+    <!-- Dynamic Car Grid -->
+    <div class="car-grid" id="car-grid">
+      <!-- Populated dynamically by home.js -->
+    </div>
+  </section>
+
+  <!-- ── CRM Leads Table Section ───────────────────────── -->
+  <section class="fade-up" style="animation-delay:0.25s">
+    <div class="section-header">
+      <div class="section-label">📋 Inbound Inquiries</div>
+      <h2>Recent Customer Leads &amp; Intent Routing</h2>
+      <p style="margin-top:0.3rem">Incoming prospect interactions classified by Laya AI for automated sales and service routing.</p>
+    </div>
+
+    <div class="crm-table-container">
+      <table class="crm-table">
+        <thead>
+          <tr>
+            <th>Customer Lead</th>
+            <th>Interested Vehicle</th>
+            <th>Channel</th>
+            <th>Inferred Intent</th>
+            <th>Lead Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="crm-leads-tbody">
+          <!-- Populated by home.js -->
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ── System Status ─────────────────────────────────── -->
+  <section class="fade-up" style="animation-delay:0.3s; margin-bottom:2rem;">
+    <div class="card card-glow">
+      <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem;">
+        <div>
+          <div class="section-label">🔌 CRM Engine Health</div>
+          <h3 style="margin-top:0.25rem;">Data Pipeline &amp; Model Status</h3>
+        </div>
+        <div style="display:flex; gap:1.5rem; flex-wrap:wrap;">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <div id="status-raw" style="width:10px; height:10px; border-radius:50%; background:var(--text-muted); transition:background 0.3s;"></div>
+            <span style="font-size:0.82rem; color:var(--text-secondary);">conversations.json</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <div id="status-cleaned" style="width:10px; height:10px; border-radius:50%; background:var(--text-muted); transition:background 0.3s;"></div>
+            <span style="font-size:0.82rem; color:var(--text-secondary);">cleaned_conversations.json</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <div id="status-output" style="width:10px; height:10px; border-radius:50%; background:var(--text-muted); transition:background 0.3s;"></div>
+            <span style="font-size:0.82rem; color:var(--text-secondary);">predictions.json</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ── Footer ────────────────────────────────────────── -->
+<footer class="footer">
+  AutoSphere Automotive CRM · Powered by <span>Laya Inference</span> &amp; <span>FastAPI</span>
+</footer>
+
+<div id="toast-container"></div>
+
+<script src="/static/js/app.js"></script>
+<script src="/static/js/home.js"></script>
+</body>
+</html>
